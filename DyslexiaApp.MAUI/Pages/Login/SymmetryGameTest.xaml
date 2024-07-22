@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DyslexiaApp.MAUI.Pages.Login.SymmetryGameTest"
+             xmlns:vm="clr-namespace:DyslexiaApp.MAUI.ViewModels"
+             x:DataType="vm:SymmetryTestViewModel"
+             xmlns:dto="clr-namespace:DyslexiaAppMAUI.Shared.Dtos;assembly=DyslexiaAppMAUI.Shared"
+             BackgroundImageSource="symmetry.jpeg">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="HomeIconStyle" TargetType="ImageButton">
+                <Setter Property="Margin" Value="10" />
+                <Setter Property="WidthRequest">
+                    <Setter.Value>
+                        <OnPlatform x:TypeArguments="x:Double">
+                            <On Platform="Android" Value="140" />
+                            <On Platform="WinUI" Value="150" />
+                        </OnPlatform>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="HeightRequest">
+                    <Setter.Value>
+                        <OnPlatform x:TypeArguments="x:Double">
+                            <On Platform="Android" Value="100" />
+                            <On Platform="WinUI" Value="100" />
+                        </OnPlatform>
+                    </Setter.Value>
+                </Setter>
+                <!--<Setter Property="WidthRequest" Value="{OnPlatform Android='140', WinUI='150',iOS='140'}" />-->
+                <!--<Setter Property="HeightRequest" Value="{OnPlatform Android='100', WinUI='100',iOS='140'}" />-->
+                <Setter Property="HorizontalOptions" Value="Start" />
+                <Setter Property="VerticalOptions" Value="Start" />
+                <Setter Property="BackgroundColor" Value="Transparent" />
+            </Style>
+
+            <Style x:Key="QuestionContainerStyle" TargetType="ContentView">
+                <Setter Property="WidthRequest" Value="200" />
+                <Setter Property="HeightRequest" Value="200" />
+                <Setter Property="Margin" Value="200,100" />
+                <Setter Property="HorizontalOptions" Value="Start" />
+                <Setter Property="VerticalOptions" Value="Start" />
+                <Setter Property="BackgroundColor" Value="Transparent" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid>
+        <Grid>
+            <Grid>
+                <VerticalStackLayout>
+                    <Grid>
+                        <Grid Style="{StaticResource HomeIconStyle}" VerticalOptions="Start" HorizontalOptions="Start">
+                            <ImageButton Source="home_button.png" 
+                                          Margin="{OnPlatform Default='0,10,-20,10', Android='10,-30,70,0'}"
+                                          BackgroundColor="Transparent"
+                                          VerticalOptions="Center" 
+                                          HorizontalOptions="Center"
+                                          Clicked="Home_Button"/>
+                        </Grid>
+                        <Label Text="Find the symmetry of the picture !"
+                                Margin="{OnPlatform Default='0,0,0,15', Android='-140,-70,70,0'}"
+                                FontAttributes="Bold"
+                                FontSize="{OnPlatform Android=20, WinUI=35}"
+                                TextColor="#126C94"
+                                HorizontalOptions="Center"
+                                VerticalOptions="Center" />
+
+                    </Grid>
+                </VerticalStackLayout>
+
+                <HorizontalStackLayout HorizontalOptions="Start"
+                                       VerticalOptions="{OnPlatform Default='Center', Android='Start'}"
+                                       Margin="{OnPlatform Default='650,-200,0,0', Android='190,70,-70,0'}">
+
+                    <Frame WidthRequest="{OnPlatform Default=120, Android=100}"
+                           HeightRequest="{OnPlatform Default=240, Android=140}"
+                           Margin="5"
+                           Padding="0"
+                           CornerRadius="10"
+                           BorderColor="Black">
+                        <Image Source="{Binding Question.MainImage.Url}"
+                               Aspect="AspectFit"/>
+                    </Frame>
+                    <Image Source="choose.png" 
+                           WidthRequest="30"
+                           HeightRequest="40"
+                           Margin="10,20"/>
+                </HorizontalStackLayout>
+            </Grid>
+        </Grid>
+        <!--WidthRequest="{OnPlatform Android=360, WinUI=300}" 
+            HeightRequest="{OnPlatform Android=200, WinUI=800}"
+            Margin="{OnPlatform Default='0,80', Android='700,30,0,-100'}"-->
+        <Grid HeightRequest="450"
+              WidthRequest="600"
+              Margin="{OnPlatform Default='100,30,0,-200', Android='450,0,130,0'}">
+            <CollectionView ItemsSource="{Binding FilteredImageOptions}"
+                             HeightRequest="{OnPlatform Default=300, Android=240}"
+                             WidthRequest="{OnPlatform Default=800, Android=400}"
+                             Margin="{OnPlatform Default='0,80', Android='0,0'}"
+                             HorizontalOptions="Center"
+                             VerticalOptions="Center">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Horizontal" 
+                                     Span="{OnPlatform Default=1, Android=2}"
+                                     VerticalItemSpacing="1"
+                                     HorizontalItemSpacing="20"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="dto:ImageDto">
+                        <HorizontalStackLayout>
+                            <Image Source="choose.png" 
+                                   WidthRequest="{OnPlatform Default=45, Android=30}"
+                                   HeightRequest="{OnPlatform Default=130, Android=40}"
+                                   Margin="10,20"/>
+                            <Frame WidthRequest="{OnPlatform Default=80, Android=70}"
+                                   HeightRequest="{OnPlatform Default=160, Android=100}"
+                                   Margin="5"
+                                   Padding="0"
+                                   CornerRadius="10"
+                                   BorderColor="{OnPlatform Default=black, Android=transparent}">
+                                <Image Source="{Binding Url}"
+                                       Aspect="AspectFit">
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:SymmetryTestViewModel}}, Path=ItemSelectedGameCommand}"
+                                                              CommandParameter="{Binding .}"/>
+                                    </Image.GestureRecognizers>
+                                </Image>
+                            </Frame>
+                        </HorizontalStackLayout>
+
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+
+        <Grid WidthRequest="{OnPlatform Default='200', Android='155'}"
+              HeightRequest="{OnPlatform Default='50', Android='50'}"
+              Margin="{OnPlatform Default='90,550,0,20', Android='-300,250,0,20'}">
+            <Button x:Name="NextButton"
+                    FontSize="{OnPlatform Default='Medium', Android='Small'}"
+                    Text="{Binding NextButtonText}"
+                    IsEnabled="{Binding IsOptionSelected}"
+                    Command="{Binding AddCurrentSelectionResultCommand}"/>
+        </Grid>
+    </Grid>
+</ContentPage>

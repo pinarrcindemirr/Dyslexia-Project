@@ -1,0 +1,105 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="DyslexiaApp.MAUI.Pages.Login.LetterMatchingGame"
+             xmlns:vm="clr-namespace:DyslexiaApp.MAUI.ViewModels"
+             x:DataType="vm:LetterMatchingViewModel"
+             xmlns:dto="clr-namespace:DyslexiaAppMAUI.Shared.Dtos;assembly=DyslexiaAppMAUI.Shared"
+             BackgroundImageSource="lettermatching.jpeg">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="HomeIconStyle" TargetType="ImageButton">
+                <Setter Property="Margin" Value="10" />
+                <Setter Property="WidthRequest" Value="150" />
+                <Setter Property="HeightRequest" Value="100" />
+                <Setter Property="HorizontalOptions" Value="Start" />
+                <Setter Property="VerticalOptions" Value="Start" />
+                <Setter Property="BackgroundColor" Value="Transparent" />
+            </Style>
+
+            <Style x:Key="QuestionContainerStyle" TargetType="ContentView">
+                <Setter Property="WidthRequest" Value="200" />
+                <Setter Property="HeightRequest" Value="200" />
+                <Setter Property="Margin" Value="200,100" />
+                <Setter Property="HorizontalOptions" Value="Start" />
+                <Setter Property="VerticalOptions" Value="Start" />
+                <Setter Property="BackgroundColor" Value="Transparent" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid  HeightRequest="{OnPlatform Default='600', Android='300'}">
+        <Grid>
+            <Grid>
+                <Grid Style="{StaticResource HomeIconStyle}" VerticalOptions="Start" HorizontalOptions="Start">
+                    <ImageButton Source="home_button.png" 
+                                 Margin="{OnPlatform Default='0,10,-20,10', Android=' 0,10,50,30'}"
+                                 BackgroundColor="Transparent"
+                                 VerticalOptions="Center" 
+                                 HorizontalOptions="Center"
+                                 Clicked="Home_Button"/>
+                </Grid>
+                <StackLayout HorizontalOptions="Start"
+                             VerticalOptions="Start"
+                              Margin="{OnPlatform Default='200,150', Android='100,30'}">
+                    <Frame WidthRequest="{OnPlatform Default='250', Android='200'}"
+                           HeightRequest="{OnPlatform Default='250', Android='200'}"
+                           Margin="5"
+                           Padding="0"
+                           CornerRadius="10"
+                           BorderColor="Transparent">
+                        <Image Source="{Binding Question.MainImage.Url}"
+                               Aspect="AspectFit"
+                               BackgroundColor="White"/>
+                    </Frame>
+                </StackLayout>
+            </Grid>
+        </Grid>
+
+        <Grid HeightRequest="{OnPlatform Default='450', Android='250'}"
+              WidthRequest="{OnPlatform Default='750', Android='350'}"
+              Margin="{OnPlatform Default='600,0,10,30', Android='400,0,30,150'}">
+            <CollectionView ItemsSource="{Binding FilteredImageOptions}"
+                            HeightRequest="{OnPlatform Default='390', Android='225'}"
+                            WidthRequest="{OnPlatform Default='600', Android='350'}"
+                            Margin="{OnPlatform Default='0,0,90,30', Android = '0,0,0,-66'}"
+                            HorizontalOptions="End"
+                            VerticalOptions="End">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" 
+                                     Span="2"
+                                     VerticalItemSpacing="{OnPlatform Default='5', Android='5'}"
+                                     HorizontalItemSpacing="{OnPlatform Default='5', Android='5'}"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="dto:ImageDto">
+                        <Frame WidthRequest="{OnPlatform Default='290', Android='249'}"
+                               HeightRequest="{OnPlatform Default='185', Android='88'}"
+                               Margin="5"
+                               Padding="0"
+                               CornerRadius="10"
+                               BorderColor="Transparent">
+                            <Image Source="{Binding Url}"
+                                   Aspect="AspectFit"
+                                   BackgroundColor="Transparent">
+                                <Image.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type vm:LetterMatchingViewModel}}, Path=ItemSelectedGameCommand}"
+                                                          CommandParameter="{Binding .}"/>
+                                </Image.GestureRecognizers>
+                            </Image>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+
+        <Grid WidthRequest="{OnPlatform Default='200', Android='200'}"
+              HeightRequest="{OnPlatform Default='50', Android='50'}"
+               Margin="{OnPlatform Default='660,500,0,20', Android='400,280,10,30'}">
+            <Button x:Name="NextButton"
+                    FontSize="Medium"
+                    Text="{Binding NextButtonText}"
+                    Command="{Binding AddCurrentSelectionResultCommand}"
+                    IsEnabled="{Binding IsOptionSelected}"/>
+        </Grid>
+    </Grid>
+</ContentPage>

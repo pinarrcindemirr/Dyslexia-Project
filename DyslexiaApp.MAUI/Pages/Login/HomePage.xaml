@@ -1,0 +1,258 @@
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:DyslexiaApp.MAUI.ViewModels"
+             x:Class="DyslexiaApp.MAUI.Pages.Login.HomePage"
+             x:DataType="vm:ChatViewModel"
+             BackgroundImageSource="mainpage.jpg">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+
+            <Style x:Key="MainContainerStyle" TargetType="ContentView">
+                <Setter Property="VerticalOptions" Value="CenterAndExpand" />
+                <Setter Property="HorizontalOptions" Value="CenterAndExpand" />
+                <Setter Property="Padding" Value="4" />
+            </Style>
+
+            <Style x:Key="CardMainStyle" TargetType="Frame">
+                <Setter Property="BackgroundColor" Value="White" />
+                <Setter Property="Padding" Value="30" />
+                <Setter Property="Margin" Value="10" />
+                <Setter Property="CornerRadius" Value="10" />
+                <Setter Property="HasShadow" Value="True" />
+                <Setter Property="WidthRequest" Value="250" />
+                <Setter Property="HeightRequest" Value="250" />
+            </Style>
+
+            <Style x:Key="CardContainerStyle" TargetType="StackLayout">
+                <Setter Property="Orientation" Value="Horizontal" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+                <Setter Property="Spacing" Value="30" />
+            </Style>
+
+            <Style x:Key="ProfileIconStyle" TargetType="ImageButton">
+                <Setter Property="Margin" Value="10" />
+                <Setter Property="WidthRequest" Value="100" />
+                <Setter Property="HeightRequest" Value="130" />
+                <Setter Property="CornerRadius" Value="55" />
+                <Setter Property="VerticalOptions" Value="StartAndExpand" />
+                <Setter Property="HorizontalOptions" Value="StartAndExpand" />
+            </Style>
+
+            <Style x:Key="ProfileIconTextStyle" TargetType="Label">
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="VerticalOptions" Value="Center" />
+                <Setter Property="HorizontalOptions" Value="Center" />
+            </Style>
+
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <Grid>
+        <Grid HorizontalOptions="End" VerticalOptions="Start" Margin="0,10,10,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <ImageButton Grid.Column="0" 
+                  Source="power.png" 
+                  BackgroundColor="Transparent"
+                  WidthRequest="30" 
+                  HeightRequest="30"
+                  Clicked="SignoutMenuItem_Clicked"/>
+        </Grid>
+
+        <!-- Profile Icon Grid'i, içeriği sol üst köşeye konumlandırılmış -->
+        <Grid Style="{StaticResource ProfileIconStyle}" VerticalOptions="Start" HorizontalOptions="Start">
+           
+            <ImageButton Source="star.png" 
+                 BackgroundColor="Transparent"
+                 VerticalOptions="Center" 
+                 HorizontalOptions="Center">
+                <ImageButton.GestureRecognizers>
+                    <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="OnProfileTapped"/>
+                </ImageButton.GestureRecognizers>
+            </ImageButton>
+            <Label Text="PROFILE" 
+                   Style="{StaticResource ProfileIconTextStyle}" 
+                   VerticalOptions="Center" 
+                   HorizontalOptions="Center">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="OnProfileTapped"/>
+                </Label.GestureRecognizers>
+            </Label>
+        </Grid>
+
+        <Grid Style="{StaticResource MainContainerStyle}">
+            <StackLayout Style="{StaticResource CardContainerStyle}">
+                <Frame Style="{StaticResource CardMainStyle}">
+                    <ContentView >
+                        <VerticalStackLayout>
+                            <Label Text="Diagnosis Tests" 
+                               TextColor="#019BE1" 
+                               FontAttributes="Bold" 
+                               HorizontalOptions="End" />
+                            <Image Source="diagnosis.jpg" 
+                               Aspect="AspectFill" 
+                               WidthRequest="200"/>
+                        </VerticalStackLayout>
+                        <ContentView.GestureRecognizers>
+                            <TapGestureRecognizer 
+                                NumberOfTapsRequired="1" 
+                                Tapped="DiagnosisTapped"/>
+                        </ContentView.GestureRecognizers>
+                    </ContentView>
+                </Frame>
+                <Frame Style="{StaticResource CardMainStyle}">
+                    <ContentView>
+                        <VerticalStackLayout>
+                            <Label Text="Educational Games" 
+                               TextColor="#019BE1" 
+                               FontAttributes="Bold" 
+                               HorizontalOptions="End" />
+                            <Image Source="education.jpg" 
+                               Aspect="AspectFill"
+                               WidthRequest="200"/>
+                        </VerticalStackLayout>
+                        <ContentView.GestureRecognizers>
+                            <TapGestureRecognizer 
+                             NumberOfTapsRequired="1"
+                             Tapped="EducationalTapped" />
+                        </ContentView.GestureRecognizers>
+                    </ContentView>
+                </Frame>
+            </StackLayout>
+        </Grid>
+
+        <Frame IsVisible="{Binding IsPopupVisible}"
+               HorizontalOptions="CenterAndExpand"
+               VerticalOptions="CenterAndExpand"
+               BackgroundColor="White" Padding="{OnPlatform Android=15, WinUI=25}" CornerRadius="15"
+               BorderColor="Black" 
+               WidthRequest="{OnPlatform Android=430, WinUI=500}"
+               HeightRequest="{OnPlatform Android=300, WinUI=500}">
+            <Grid>
+                <Grid>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="60"/>
+                    </Grid.RowDefinitions>
+
+                    <ImageButton Source="close.png" 
+                                  BackgroundColor="Transparent"
+                                  Margin="{OnPlatform Android='0,0', WinUI='-10,-10'}"
+                                  WidthRequest="{OnPlatform Android=20, WinUI=25}"
+                                  HeightRequest="{OnPlatform Android=20, WinUI=25}"
+                                  Padding="10"
+                                  Aspect="AspectFit"
+                                  HorizontalOptions="End" 
+                                  VerticalOptions="Start"
+                                  Grid.Column="1" Grid.Row="0"
+                                  Command="{Binding CloseChatCommand}"/>
+
+                    <Grid Grid.Row="0" 
+                          VerticalOptions="FillAndExpand"
+                          Margin="0,30,10,0">
+                        <Image Source="chatbackground.jpeg"
+                               Aspect="AspectFill"
+                               Opacity="1" />
+
+                        <ScrollView Grid.Row="0" VerticalOptions="FillAndExpand">
+                            <CollectionView ItemsSource="{Binding Content}"
+                                            HorizontalOptions="FillAndExpand" 
+                                            VerticalOptions="FillAndExpand"
+                                            Margin="10">
+
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Frame CornerRadius="10" BackgroundColor="Transparent" Padding="10">
+                                            <Frame.Resources>
+                                                <ResourceDictionary>
+                                                    <Style TargetType="Frame">
+                                                        <!-- Default HorizontalOptions and Margin for Frames -->
+                                                        <Setter Property="HorizontalOptions" Value="Start" />
+                                                        <Setter Property="Margin" Value="10" />
+
+                                                        <!-- Style Triggers to change properties based on IsUserMessage value -->
+                                                        <Style.Triggers>
+                                                            <!-- When IsUserMessage is True -->
+                                                            <DataTrigger TargetType="Frame" Binding="{Binding IsUserMessage}" Value="True">
+                                                                <Setter Property="HorizontalOptions" Value="End" />
+                                                                <Setter Property="BackgroundColor" Value="Transparent" />
+                                                                <Setter Property="Margin" Value="10,5" />
+                                                            </DataTrigger>
+                                                            <!-- When IsUserMessage is False -->
+                                                            <DataTrigger TargetType="Frame" Binding="{Binding IsUserMessage}" Value="False">
+                                                                <Setter Property="HorizontalOptions" Value="Start" />
+                                                                <Setter Property="BackgroundColor" Value="Transparent" />
+                                                                <Setter Property="Margin" Value="10,5" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </ResourceDictionary>
+                                            </Frame.Resources>
+                                            <Grid>
+                                                <Grid.RowDefinitions>
+                                                    <RowDefinition Height="Auto"/>
+                                                </Grid.RowDefinitions>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="*"/>
+                                                </Grid.ColumnDefinitions>
+                                                <Grid>
+                                                    <Frame BorderColor="Black"
+                                                           Background="#D8D8DE">
+                                                        <Label Text="{Binding Content}" 
+                                                               Margin="5"
+                                                               VerticalOptions="Start" 
+                                                               HorizontalOptions="Start"
+                                                               TextColor="Black"/>
+                                                    </Frame>
+
+                                                </Grid>
+
+
+                                            </Grid>
+
+                                        </Frame>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </ScrollView>
+
+
+                    </Grid>
+
+
+                    <Grid Grid.Row="1" 
+                          HorizontalOptions="FillAndExpand" 
+                          VerticalOptions="End" 
+                          Margin="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Entry Text="{Binding CurrentMessage}" Placeholder="Type your question here..." 
+                               Grid.Column="0" 
+                               TextColor="Black" 
+                               VerticalOptions="Start" 
+                               HorizontalOptions="Start"/>
+                        <Button Text="Send" Command="{Binding SendMessageCommand}" Grid.Column="1" />
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Frame>
+
+        <Grid HorizontalOptions="End" VerticalOptions="End" Margin="{OnPlatform Android='30,-10,10,-200', WinUI='50,20'}">
+            <ImageButton Source="chat.png" 
+                         BackgroundColor="Transparent" 
+                         WidthRequest="50" 
+                         VerticalOptions="End" 
+                         HorizontalOptions="End" 
+                         Command="{Binding ShowChatCommand}"/>
+
+        </Grid>
+    </Grid>
+
+</ContentPage>

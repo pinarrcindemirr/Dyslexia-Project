@@ -1,2 +1,2 @@
-# Dyslexia-Project
-Dyslexia Project (  Final Project)
+# Dyslexia Project
+Dyslexia Diagnostic and Education Activity System for Children (  Final Project)
